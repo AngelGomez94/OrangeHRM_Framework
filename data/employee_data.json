@@ -1,0 +1,31 @@
+{
+  "alta_empleado": {
+    "first_name": "Andres Angel",
+    "middle_name": "Gomez",
+    "last_name": "Morales"
+  },
+  "personal_details": {
+    "other_id": "Angel123",
+    "license_number": "180000241787",
+    "license_exp": "2025-12-31",
+    "nationality": "American",
+    "marital_status": "Single",
+    "date_of_birth": "1994-09-14"
+  },
+  "custom_fields": {
+    "blood_type": "A+"
+  },
+  "contact_details": {
+    "street1": "Calle de prubas QA",
+    "street2": "Otra calle de pruebas",
+    "city": "Ciudad de pruebas",
+    "state": "Estado de pruebas",
+    "zip_code": "12345",
+    "country": "Mexico",
+    "home_phone": "555-1234",
+    "mobile": "555-5678",
+    "work_phone": "555-9012",
+    "email": "andres.angel@example.com",
+    "other_email": "andres.angel@otherexample.com"
+  }
+}

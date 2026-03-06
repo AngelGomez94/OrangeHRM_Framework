@@ -2,7 +2,6 @@ from selenium.webdriver.chrome.webdriver import WebDriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.common.action_chains import ActionChains
 import uuid
 from selenium.webdriver.common.by import By
 class BaseOrange:
@@ -41,17 +40,12 @@ class BaseOrange:
          return self.driver.current_url
     def indicar_menu_actual(self,locador):
         return self.wait.until(EC.visibility_of_element_located(locador)).text
-    def generar_idemployee(self):
+    def abrir_menu_pim(self):
         return uuid.uuid4().hex[:8]
     def toast(self,locator):
         return self.wait.until(EC.visibility_of_element_located(locator)).text
 
     def toast_and_wait(self, locator):
-        """Return toast text and wait until it disappears.
-
-        This helps prevent capturing the same toast multiple times when
-        toasts appear quickly one after another.
-        """
         element = self.wait.until(EC.visibility_of_element_located(locator))
         text = element.text
         self.wait.until(EC.invisibility_of_element_located(locator))
@@ -84,9 +78,3 @@ class BaseOrange:
             # Si falla, intentar con JavaScript
             option_element = self.driver.find_element(*opcion_locator)
             self.driver.execute_script("arguments[0].click();", option_element)
-
-
-       
-
- 
-        
