@@ -38,7 +38,11 @@ class PinPage(BaseOrange):
  toast_custom_fields = (By.CSS_SELECTOR, ".oxd-toast-content p:last-child")
  contact_details_menu = (By.XPATH,"//a[normalize-space()='Contact Details']")
  txt_street1 = (By.XPATH,"//label[text()='Street 1']/parent::div/following-sibling::div/input")
- 
+ txt_street2 = (By.XPATH,"//label[text()='Street 2']/parent::div/following-sibling::div/input")
+ txt_city = (By.XPATH,"//label[text()='City']/parent::div/following-sibling::div/input")
+ txt_state = (By.XPATH,"//label[text()='State/Province']/parent::div/following-sibling::div/input")
+ txt_postal_code = (By.XPATH,"//label[text()='Zip/Postal Code']/parent::div/following-sibling::div/input")
+ dropdown_country = (By.XPATH,"//label[text()='Country']/parent::div/following-sibling::div//div[@class='oxd-select-text-input']")
 
 
  def __init__(self, driver: WebDriver):
@@ -87,6 +91,11 @@ class PinPage(BaseOrange):
  def contact_details(self,data):
      self.esperar_y_hacer_click(self.contact_details_menu)
      self.escribir_clickable(self.txt_street1,data['street1'])
+     self.escribir_clickable(self.txt_street2,data['street2'])
+     self.escribir_clickable(self.txt_city,data['city'])
+     self.escribir_clickable(self.txt_state,data['state'])
+     self.escribir_clickable(self.txt_postal_code,data['zip_code'])
+     self.llenar_dropdown(self.dropdown_country,data['country'])
          
 
   
