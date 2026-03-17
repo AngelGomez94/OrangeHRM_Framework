@@ -26,7 +26,7 @@ def driver():
     yield driver # Le presta el driver al test
     
     # --- DESPUÉS DEL TEST ---
-    time.sleep(5) # Bajé un poco el sleep para no esperar tanto
+    
     driver.quit()
 
 # --- HOOK PARA CAPTURAS DE PANTALLA EN CASO DE FALLO ---

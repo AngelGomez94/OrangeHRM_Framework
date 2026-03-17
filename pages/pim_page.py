@@ -3,9 +3,12 @@ from pages.orange_base import BaseOrange
 from selenium.webdriver.common.by import By
 import os
 import random
+from faker import Faker
 
 
 class PinPage(BaseOrange):
+ # generador Faker de uso compartido
+ faker = Faker()
  menu_pim = (By.XPATH, "//span[text()='PIM']")
  btn_add_employee = (By.XPATH,"//button[contains(.,' Add ')]")
  txt_usuario = (By.NAME,"username")
@@ -31,6 +34,8 @@ class PinPage(BaseOrange):
  expitarion_date = (By.XPATH,"//label[contains(text(),'License Expiry Date')]/parent::div/following-sibling::div//input")
  txt_marital_status = (By.XPATH,"//label[text()='Marital Status']/parent::div/following-sibling::div//div[@class='oxd-select-text-input']")
  txt_date_birth =(By.XPATH,"//label[text()='Date of Birth']/parent::div/following-sibling::div//div//input")
+ emergency_contact = (By.XPATH,"//label[text()='Emergency Contact']/parent::div/following-sibling::div/input")
+ job_title = (By.XPATH,"//label[text()='Job Title']/parent::div/following-sibling::div/input")
  btn_personal_details = (By.XPATH,"(//button[@type='submit'][normalize-space()='Save'])[1]")
  blod_type = (By.XPATH,"//label[text()='Blood Type']/parent::div/following-sibling::div//div[@class='oxd-select-text-input']")
  btn_save_custom_fields = (By.XPATH,"(//button[@type='submit'][normalize-space()='Save'])[2]")
@@ -43,8 +48,21 @@ class PinPage(BaseOrange):
  txt_state = (By.XPATH,"//label[text()='State/Province']/parent::div/following-sibling::div/input")
  txt_postal_code = (By.XPATH,"//label[text()='Zip/Postal Code']/parent::div/following-sibling::div/input")
  dropdown_country = (By.XPATH,"//label[text()='Country']/parent::div/following-sibling::div//div[@class='oxd-select-text-input']")
-
-
+ home_phone = (By.XPATH,"//label[text()='Home']/parent::div/following-sibling::div/input")
+ mobile_phone = (By.XPATH, "//label[text()='Mobile']/parent::div/following-sibling::div/input")
+ work_phone = (By.XPATH, "//label[text() = 'Work']/parent::div/following-sibling::div/input ")
+ work_email = (By.XPATH,"//label[text() = 'Work Email']/parent::div/following-sibling::div/input")
+ other_email = (By.XPATH,"//label[text()='Other Email']/parent::div/following-sibling::div/input")
+ emergency_contact_menu = (By.XPATH,"//a[normalize-space()='Emergency Contacts']")
+ add_emergency_contact = (By.XPATH,"//h6[contains(.,'Assigned Emergency Contacts')]/following::button[1]")
+ contact_emergency_name = (By.XPATH,"//label[text()='Name']/parent::div/following-sibling::div/input")
+ contact_relationship = (By.XPATH,"//label[text()='Relationship']/parent::div/following-sibling::div/input")
+ contact_home_phone = (By.XPATH,"//label[text()='Home Telephone']/parent::div/following-sibling::div/input")
+ contact_mobile_phone = (By.XPATH,"//label[text()='Mobile']/parent::div/following-sibling::div/input")
+ contact_work_phone = (By.XPATH,"//label[text()='Work Telephone']/parent::div/following-sibling::div/input")
+ btn_save_emergency_contact = (By.XPATH,"(//button[normalize-space()='Save'])[1]")
+ 
+  
  def __init__(self, driver: WebDriver):
         super().__init__(driver)
 
@@ -84,19 +102,53 @@ class PinPage(BaseOrange):
       return self.toast_and_wait(self.toast_suscces)
  
  def custom_fields(self,data):
-     self.llenar_dropdown(self.blod_type, data['blood_type'])
+     self.llenar_dropdown(self.blod_type,data['blood_type'])
      self.esperar_y_hacer_click(self.btn_save_custom_fields)
  def validacion_toast_custom_fields(self):
          return self.toast_and_wait(self.toast_suscces)
  def contact_details(self,data):
      self.esperar_y_hacer_click(self.contact_details_menu)
+     self.esperar_spinner_desaparecer(self.spiner)
      self.escribir_clickable(self.txt_street1,data['street1'])
      self.escribir_clickable(self.txt_street2,data['street2'])
      self.escribir_clickable(self.txt_city,data['city'])
      self.escribir_clickable(self.txt_state,data['state'])
      self.escribir_clickable(self.txt_postal_code,data['zip_code'])
      self.llenar_dropdown(self.dropdown_country,data['country'])
-         
+ def fill_contact_telephone(self,data):
+     self.escribir_clickable(self.home_phone,data['home_phone'])
+     self.escribir_clickable(self.mobile_phone,data['mobile'])
+     self.escribir_clickable(self.work_phone,data['work_phone'])
+ 
+ def fill_contact_email(self):
+     unique_email = self.faker.email()
+     other_email = self.faker.email()
+     self.escribir_clickable(self.work_email, unique_email)
+     self.escribir_clickable(self.other_email, other_email)
+     self.esperar_y_hacer_click(self.btn_personal_details)
+
+ def contact_details_toast(self):
+     return self.toast_and_wait(self.toast_suscces)
+
+ def custom_fields_contact_details_toast(self):
+     return self.toast_and_wait(self.toast_suscces)
+ 
+ def emergency_contacts(self,data):
+        self.esperar_y_hacer_click(self.emergency_contact_menu)
+        self.esperar_y_hacer_click(self.add_emergency_contact)
+        self.escribir_clickable(self.contact_emergency_name,data['name'])
+        self.escribir_clickable(self.contact_relationship,data['relationship'])
+        self.escribir_clickable(self.contact_home_phone,data['home_phone'])
+        self.escribir_clickable(self.contact_mobile_phone,data['mobile'])
+        self.escribir_clickable(self.contact_work_phone,data['work_phone'])
+        self.esperar_y_hacer_click(self.btn_save_emergency_contact)
+ 
+ def validacion_toast_emergency_contact(self):
+        return self.toast_and_wait(self.toast_suscces)
+     
+
+ 
+ 
 
   
     

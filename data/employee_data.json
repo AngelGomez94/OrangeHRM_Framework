@@ -13,6 +13,8 @@
     "date_of_birth": "1994-09-14"
   },
   "custom_fields": {
+    "emergency_contact": "5525123944",
+    "job_title": "QA Engineer",
     "blood_type": "A+"
   },
   "contact_details": {
@@ -24,8 +26,22 @@
     "country": "Mexico",
     "home_phone": "555-1234",
     "mobile": "555-5678",
-    "work_phone": "555-9012",
+    "work_phone": "555-9012"
+  },
+  "telephone_details": {
+    "home_phone": "555-1234",
+    "mobile": "555-5678",
+    "work_phone": "555-9012"
+  },
+  "email_details": {
     "email": "andres.angel@example.com",
     "other_email": "andres.angel@otherexample.com"
+  },
+  "emergency_contact": {
+    "name": "Maria Gomez",
+    "relationship": "Sister",
+    "home_phone": "555-4321",
+    "mobile": "555-8765",
+    "work_phone": "555-2109"
   }
 }
