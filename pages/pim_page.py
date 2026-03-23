@@ -2,7 +2,6 @@ from selenium.webdriver.chrome.webdriver import WebDriver
 from pages.orange_base import BaseOrange
 from selenium.webdriver.common.by import By
 import os
-import random
 from faker import Faker
 
 
@@ -30,10 +29,7 @@ class PinPage(BaseOrange):
  male = (By.XPATH, "//label[text()='Male']")
  female = (By.XPATH,"//label[text()='Female']")
  spiner = (By.CLASS_NAME,"oxd-loading-spinner")
- txt_nationality = (By.XPATH, "//label[text()='Nationality']/parent::div/following-sibling::div//div[@class='oxd-select-text-input']")
  expitarion_date = (By.XPATH,"//label[contains(text(),'License Expiry Date')]/parent::div/following-sibling::div//input")
- txt_marital_status = (By.XPATH,"//label[text()='Marital Status']/parent::div/following-sibling::div//div[@class='oxd-select-text-input']")
- txt_date_birth =(By.XPATH,"//label[text()='Date of Birth']/parent::div/following-sibling::div//div//input")
  emergency_contact = (By.XPATH,"//label[text()='Emergency Contact']/parent::div/following-sibling::div/input")
  job_title = (By.XPATH,"//label[text()='Job Title']/parent::div/following-sibling::div/input")
  btn_personal_details = (By.XPATH,"(//button[@type='submit'][normalize-space()='Save'])[1]")
@@ -61,8 +57,25 @@ class PinPage(BaseOrange):
  contact_mobile_phone = (By.XPATH,"//label[text()='Mobile']/parent::div/following-sibling::div/input")
  contact_work_phone = (By.XPATH,"//label[text()='Work Telephone']/parent::div/following-sibling::div/input")
  btn_save_emergency_contact = (By.XPATH,"(//button[normalize-space()='Save'])[1]")
- 
-  
+ dependets_menu = (By.XPATH,"//a[normalize-space()='Dependents']")
+ add_dependent = (By.XPATH,"//h6[contains(.,'Assigned Dependents')]/following::button[1]")
+ dependent_name = (By.XPATH,"//label[text() = 'Name']/parent::div/following-sibling::div/input")
+ dependent_relationship = (By.XPATH,"//label[text()='Relationship']/parent::div/following-sibling::div//div[@class='oxd-select-text-input']")
+ specific_dependent = (By.XPATH,"//label[text()='Please Specify']/parent::div/following-sibling::div/input")
+ dependent_date_birth = (By.XPATH, "//label[text()='Date of Birth']/parent::div/following-sibling::div//input")
+ btn_save_dependent =(By.XPATH,"(//button[normalize-space()='Save'])[1]")
+ inmigration_menu =(By.XPATH,"//a[normalize-space()='Immigration']")
+ add_inmigration = (By.XPATH,"//h6[contains(.,'Assigned Immigration Records')]/following::button[1]")
+ passport = (By.XPATH,"//label[text()='Passport']")
+ visa = (By.XPATH,"//label[text()='Visa']")
+ number_document = (By.XPATH,"//label[text()='Number']/parent::div/following-sibling::div//input")
+ document_issued_date =(By.XPATH,"//label[text()='Issued Date']/parent::div/following-sibling::div//input")
+ document_expiration_date = (By.XPATH,"//label[text()='Expiry Date']/parent::div/following-sibling::div//input")
+ document_status = (By.XPATH,"//label[text()='Eligible Status']/parent::div/following-sibling::div/input")
+ document_issued_by = (By.XPATH,"//label[text()='Issued By']/parent::div/following-sibling::div//div[@class='oxd-select-text-input']")
+ document_review_date = (By.XPATH,"//label[text()='Eligible Review Date']/parent::div/following-sibling::div//input")
+ document_comments = (By.XPATH,"//label[text()='Comments']/parent::div/following-sibling::div//textarea")
+
  def __init__(self, driver: WebDriver):
         super().__init__(driver)
 
@@ -92,11 +105,7 @@ class PinPage(BaseOrange):
     self.llenar_dropdown(self.txt_nationality, data['nationality'])
     self.llenar_dropdown(self.txt_marital_status, data['marital_status'])
     self.llenar_datepicker(self.txt_date_birth, data['date_of_birth'])
-    valor_genero = random.choice([True, False])
-    if valor_genero:
-        self.esperar_y_hacer_click(self.male)
-    else:
-        self.esperar_y_hacer_click(self.female)
+    self.llenar_radio_button(self.male, self.female)
     self.esperar_y_hacer_click(self.btn_personal_details)
  def validacion_toast_personal_details(self):
       return self.toast_and_wait(self.toast_suscces)
@@ -145,6 +154,32 @@ class PinPage(BaseOrange):
  
  def validacion_toast_emergency_contact(self):
         return self.toast_and_wait(self.toast_suscces)
+ def assigned_dependents(self,data):
+      self.esperar_y_hacer_click(self.dependets_menu)
+      self.esperar_y_hacer_click(self.add_dependent)
+      self.escribir_clickable(self.dependent_name,data['name'])
+      self.llenar_dropdown(self.dependent_relationship,data['relationship'])
+      self.escribir_clickable(self.specific_dependent,data['specific_relationship'])
+      self.llenar_datepicker(self.dependent_date_birth,data['date_of_birth'])
+      self.esperar_y_hacer_click(self.btn_save_dependent)
+ def validacion_toast_dependents(self):
+      return self.toast_and_wait(self.toast_suscces)
+ def fill_inmigration(self,data):
+      self.esperar_y_hacer_click(self.inmigration_menu)
+      self.esperar_y_hacer_click(self.add_inmigration)
+      self.llenar_radio_button(self.passport,self.visa)
+      self.escribir_clickable(self.number_document,data['number_document'])
+      self.llenar_datepicker(self.document_issued_date,data['document_issued_date'])
+      self.llenar_datepicker(self.document_expiration_date,data['document_expiration_date'])
+      self.escribir_clickable(self.document_status,data['document_status'])
+      self.llenar_dropdown(self.document_issued_by,data['document_issued_by'])
+      self.llenar_datepicker(self.document_review_date,data['document_review_date'])
+      self.escribir_clickable(self.document_comments,data['document_comments'])
+
+      
+
+
+      
      
 
  

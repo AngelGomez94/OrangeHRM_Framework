@@ -4,6 +4,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
 import uuid
 from selenium.webdriver.common.by import By
+import random
 class BaseOrange:
     def __init__(self, driver:WebDriver):
         self.driver = driver
@@ -78,3 +79,17 @@ class BaseOrange:
             # Si falla, intentar con JavaScript
             option_element = self.driver.find_element(*opcion_locator)
             self.driver.execute_script("arguments[0].click();", option_element)
+    def llenar_radio_button(self,*locators):
+        """Selecciona aleatoriamente entre múltiples opciones de radio button"""
+        locator = random.choice(locators)
+        self.esperar_y_hacer_click(locator)
+
+    def esperar_texto_en_elemento(self,locator,texto):
+        self.wait.until(EC.text_to_be_present_in_element(locator,texto))
+
+    def obtener_nombre_tabla_busqueda(self,locator_name,locator_lastname):
+        xpath_first_name = locator_name
+        xpath_last_name = locator_lastname
+        nombre_primer_apellido = self.wait.until(EC.visibility_of_element_located(xpath_first_name)).text
+        nombre_segundo_apellido = self.wait.until(EC.visibility_of_element_located(xpath_last_name)).text
+        return f"{nombre_primer_apellido} {nombre_segundo_apellido}"

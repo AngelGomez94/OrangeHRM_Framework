@@ -28,5 +28,8 @@ def test_pim(driver,user,password):
     pim.emergency_contacts(EMPLOYEE_DATA['emergency_contact'])
     toast_emergency_contact = pim.validacion_toast_emergency_contact()
     assert toast_emergency_contact == "Successfully Saved", f"Se esperaba el texto en el toast Successfully Saved pero se muestra: {toast_emergency_contact}"
-    
+    pim.assigned_dependents(EMPLOYEE_DATA['dependents'])
+    toast_dependents = pim.validacion_toast_dependents()
+    assert toast_dependents == "Successfully Saved", f"Se esperaba el texto en el toast Successfully Saved pero se muestra: {toast_dependents}"
+    pim.fill_inmigration(EMPLOYEE_DATA['inmigration'])
     

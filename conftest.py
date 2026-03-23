@@ -1,8 +1,6 @@
 import pytest
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
-import pytest_html
-import time
 from pytest_html import extras
 
 @pytest.fixture(scope="function")

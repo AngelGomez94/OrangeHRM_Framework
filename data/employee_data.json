@@ -1,8 +1,8 @@
 {
   "alta_empleado": {
-    "first_name": "Andres Angel",
-    "middle_name": "Gomez",
-    "last_name": "Morales"
+    "first_name": "Pruebita",
+    "middle_name": "QAtito",
+    "last_name": "Petro"
   },
   "personal_details": {
     "other_id": "Angel123",
@@ -43,5 +43,20 @@
     "home_phone": "555-4321",
     "mobile": "555-8765",
     "work_phone": "555-2109"
+  },
+  "dependents": {
+    "name": "Sofia Angel",
+    "relationship": "Other",
+    "specific_relationship": "Daughter",
+    "date_of_birth": "2015-05-20"
+  },
+  "inmigration": {
+    "number_document": "X1234567",
+    "document_issued_date": "2020-01-01",
+    "document_expiration_date": "2030-01-01",
+    "document_status": "Valid",
+    "document_issued_by": "Mexico",
+    "document_review_date": "2025-01-01",
+    "document_comments": "No comments"
   }
 }
