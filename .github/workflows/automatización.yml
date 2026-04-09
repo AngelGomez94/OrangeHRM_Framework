@@ -1,0 +1,40 @@
+name: Pruebas Automatizadas OrangeHRM
+
+# 1. ¿Cuándo se va a ejecutar esto?
+on:
+  push:
+    branches: [ "main", "master" ] # Cada que hagas un push a la rama principal
+
+jobs:
+  ejecutar-pruebas:
+    # 2. ¿En qué computadora de la nube va a correr?
+    runs-on: ubuntu-latest 
+
+    steps:
+    # 3. Descarga tu código de GitHub a esa computadora
+    - name: Descargar el repositorio
+      uses: actions/checkout@v4
+
+    # 4. Instala Python
+    - name: Configurar Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11' # Usamos una versión estable
+
+    # 5. Instala las librerías de tu lista de compras
+    - name: Instalar dependencias
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    # 6. ¡Ejecuta las pruebas! (Igual que en tu terminal)
+    - name: Correr pruebas con Pytest
+      run: python -m pytest -v -s test/test_pim.py --alluredir=allure-results
+
+    # 7. Guarda los resultados para que los puedas descargar
+    - name: Guardar Resultados de Allure
+      uses: actions/upload-artifact@v4
+      if: always() # Queremos que guarde el reporte aunque la prueba falle
+      with:
+        name: reporte-allure
+        path: allure-results
