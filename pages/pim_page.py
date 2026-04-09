@@ -8,7 +8,7 @@ import allure
 class PinPage(BaseOrange):
  # generador Faker de uso compartido
  faker = Faker()
- menu_pim = (By.XPATH, "//span[text()='PIM']")
+ menu_pim = (By.XPATH, "//a[contains(@href, 'viewPimModule')]")
  btn_add_employee = (By.XPATH,"//button[contains(.,' Add ')]")
  txt_usuario = (By.NAME,"username")
  txt_password = (By.NAME,"password")
@@ -94,6 +94,7 @@ class PinPage(BaseOrange):
  @allure.step("Alta de empleado sin login con datos: {data} y ID: {employe_id}")
  def alta_empleado_sin_login(self,data,employe_id):
      self.esperar_y_hacer_click(self.menu_pim)
+     self.driver.save_screenshot("evidencia_antes_de_PIM.png")
      self.esperar_y_hacer_click(self.btn_add_employee)
      self.escribir_clickable(self.txt_first_name,data['first_name'])
      self.escribir_clickable(self.txt_middle_name,data['middle_name'])
