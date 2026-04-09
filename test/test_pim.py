@@ -30,4 +30,3 @@ def test_pim(login_setup): #Se pide la fixture login_setup para que se ejecute e
     pim.fill_inmigration(EMPLOYEE_DATA['inmigration'])
     toast_inmigration = pim.validacion_toast_inmigration()
     assert toast_inmigration == "Successfully Saved", f"Se esperaba el texto en el toast Successfully Updated pero se muestra: {toast_inmigration}"
-    print("Test PIM finalizado con éxito")
