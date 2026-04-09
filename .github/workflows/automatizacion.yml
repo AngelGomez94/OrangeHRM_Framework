@@ -4,7 +4,7 @@ name: Pruebas Automatizadas OrangeHRM
 on:
   push:
     branches: [ "main", "master" ] # Cada que hagas un push a la rama principal
-    workflow_dispatch: 
+  workflow_dispatch: 
 
 jobs:
   ejecutar-pruebas:
