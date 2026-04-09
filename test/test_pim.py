@@ -2,8 +2,6 @@ import pytest
 from pages.pim_page import PinPage
 from data.data import EMPLOYEE_DATA
 
-
-
 def test_pim(login_setup): #Se pide la fixture login_setup para que se ejecute el login antes de realizar las acciones del test
     driver = login_setup  #Recibimos el driver ya logueado gracias a la fixture
     pim = PinPage(driver)
@@ -32,4 +30,4 @@ def test_pim(login_setup): #Se pide la fixture login_setup para que se ejecute e
     pim.fill_inmigration(EMPLOYEE_DATA['inmigration'])
     toast_inmigration = pim.validacion_toast_inmigration()
     assert toast_inmigration == "Successfully Saved", f"Se esperaba el texto en el toast Successfully Updated pero se muestra: {toast_inmigration}"
-    
+    print("Test PIM finalizado con éxito")
