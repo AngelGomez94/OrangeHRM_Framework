@@ -39,7 +39,6 @@ class PinSearchPage(BaseOrange):
       return self.obtener_nombre_tabla_busqueda(self.cell_name,self.cell_lastname)
   def ir_consultar_usuario(self):
       self.esperar_y_hacer_click(self.record_user)
-      time.sleep(5)
       
 
 

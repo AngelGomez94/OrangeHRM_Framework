@@ -2,6 +2,8 @@ import pytest
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from pytest_html import extras
+from pages.login_exitoso import LoginPage
+from data.data import USUARIOS
 
 @pytest.fixture(scope="function")
 def driver():
@@ -45,3 +47,17 @@ def pytest_runtest_makereport(item, call):
             extra.append(extras.html(html))
     
     report.extra = extra
+
+ # Pasamos la lista de usuarios al test a través de un fixture
+@pytest.fixture(params=USUARIOS)
+def login_setup(driver, request):
+    #request.param extrae el usuario y contraseña de la lista USUARIOS
+    user,password = request.param
+    #Instanciamos la página de login
+    login = LoginPage(driver)
+    login.abrir_url("https://opensource-demo.orangehrmlive.com/web/index.php/auth/login")
+    login.ingresar_credenciales(user,password)
+    #Una vez logueado, de devolvemos el driver para que los tests puedan usarlo
+    return driver
+
+

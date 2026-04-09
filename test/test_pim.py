@@ -1,15 +1,13 @@
 import pytest
-from pages.login_exitoso import LoginPage
 from pages.pim_page import PinPage
-from data.data import USUARIOS, EMPLOYEE_DATA
+from data.data import EMPLOYEE_DATA
 
 
-@pytest.mark.parametrize("user, password", USUARIOS)
-def test_pim(driver,user,password):
-    login = LoginPage(driver)
+
+def test_pim(login_setup): #Se pide la fixture login_setup para que se ejecute el login antes de realizar las acciones del test
+    driver = login_setup  #Recibimos el driver ya logueado gracias a la fixture
     pim = PinPage(driver)
-    login.abrir_url("https://opensource-demo.orangehrmlive.com/web/index.php/auth/login")
-    login.ingresar_credenciales(user,password)
+    
     employee_id = pim.abrir_menu_pim()
     pim.alta_empleado_sin_login(EMPLOYEE_DATA['alta_empleado'], employee_id)
     toast__alta = pim.validacion_toast_alta_usuario()
@@ -32,4 +30,6 @@ def test_pim(driver,user,password):
     toast_dependents = pim.validacion_toast_dependents()
     assert toast_dependents == "Successfully Saved", f"Se esperaba el texto en el toast Successfully Saved pero se muestra: {toast_dependents}"
     pim.fill_inmigration(EMPLOYEE_DATA['inmigration'])
+    toast_inmigration = pim.validacion_toast_inmigration()
+    assert toast_inmigration == "Successfully Saved", f"Se esperaba el texto en el toast Successfully Updated pero se muestra: {toast_inmigration}"
     

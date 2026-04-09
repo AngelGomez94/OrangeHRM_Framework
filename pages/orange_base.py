@@ -93,3 +93,14 @@ class BaseOrange:
         nombre_primer_apellido = self.wait.until(EC.visibility_of_element_located(xpath_first_name)).text
         nombre_segundo_apellido = self.wait.until(EC.visibility_of_element_located(xpath_last_name)).text
         return f"{nombre_primer_apellido} {nombre_segundo_apellido}"
+
+    def activar_toggle (self,check_input, switch_visual, activar=True):
+        self.wait.until(EC.presence_of_element_located(check_input))
+        self.wait.until(EC.element_to_be_clickable(switch_visual))
+        is_active = self.driver.find_element(*check_input).is_selected()
+        if activar and not is_active:
+            self.driver.find_element(*switch_visual).click()
+        elif not activar and is_active:
+            self.driver.find_element(*switch_visual).click()
+    
+      

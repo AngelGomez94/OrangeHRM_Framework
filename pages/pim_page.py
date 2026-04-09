@@ -3,7 +3,7 @@ from pages.orange_base import BaseOrange
 from selenium.webdriver.common.by import By
 import os
 from faker import Faker
-
+import allure
 
 class PinPage(BaseOrange):
  # generador Faker de uso compartido
@@ -31,7 +31,6 @@ class PinPage(BaseOrange):
  spiner = (By.CLASS_NAME,"oxd-loading-spinner")
  expitarion_date = (By.XPATH,"//label[contains(text(),'License Expiry Date')]/parent::div/following-sibling::div//input")
  emergency_contact = (By.XPATH,"//label[text()='Emergency Contact']/parent::div/following-sibling::div/input")
- job_title = (By.XPATH,"//label[text()='Job Title']/parent::div/following-sibling::div/input")
  btn_personal_details = (By.XPATH,"(//button[@type='submit'][normalize-space()='Save'])[1]")
  blod_type = (By.XPATH,"//label[text()='Blood Type']/parent::div/following-sibling::div//div[@class='oxd-select-text-input']")
  btn_save_custom_fields = (By.XPATH,"(//button[@type='submit'][normalize-space()='Save'])[2]")
@@ -75,15 +74,24 @@ class PinPage(BaseOrange):
  document_issued_by = (By.XPATH,"//label[text()='Issued By']/parent::div/following-sibling::div//div[@class='oxd-select-text-input']")
  document_review_date = (By.XPATH,"//label[text()='Eligible Review Date']/parent::div/following-sibling::div//input")
  document_comments = (By.XPATH,"//label[text()='Comments']/parent::div/following-sibling::div//textarea")
+ btn_save_inmigration =(By.XPATH,"(//button[normalize-space()='Save'])[1]")
+ job_joined_date = (By.XPATH,"//label[text()= 'Joined Date']/parent::div/following-sibling::div//input")
+ job_title = (By.XPATH,"//label[text()='Job Title']/parent::div/following-sibling::div//div[@class='oxd-select-text-input']")
+ job_category = (By.XPATH, "//label[text()='Job Category']/parent::div/following-sibling::div//div[@class='oxd-select-text-input']")
+ job_sub_unit = (By.XPATH,"//label[text()='Sub Unit']/parent::div/following-sibling::div//div[@class='oxd-select-text-input']")
+ job_location = (By.XPATH,"//label[text()='Location']/parent::div/following-sibling::div//div[@class='oxd-select-text-input']")
+ employment_status = (By.XPATH, "//label[text()='Employment Status']/parent::div/following-sibling::div//div[@class='oxd-select-text-input']")
+ contract_details_input = (By.XPATH,"//input[@type='checkbox']")
+ contract_details_switch = (By.XPATH,"//span[contains(@class, 'oxd-switch-input')]")
+ contract_start_date = (By.XPATH, "//label[text()= 'Joined Date']/parent::div/following-sibling::div//input")
+ contract_end_date = (By.XPATH,"//label[text()= 'Contract End Date']/parent::div/following-sibling::div//input")
+
 
  def __init__(self, driver: WebDriver):
         super().__init__(driver)
 
- def ingresar_credenciales(self,usuario,password):
-     self.escribir_clickable(self.txt_usuario,usuario)
-     self.escribir_clickable(self.txt_password,password)
-     self.esperar_y_hacer_click(self.btn_login)
  
+ @allure.step("Alta de empleado sin login con datos: {data} y ID: {employe_id}")
  def alta_empleado_sin_login(self,data,employe_id):
      self.esperar_y_hacer_click(self.menu_pim)
      self.esperar_y_hacer_click(self.btn_add_employee)
@@ -94,8 +102,11 @@ class PinPage(BaseOrange):
      ruta_foto = os.path.abspath("./data/foto.jpg")
      self.subir_foto(self.btn_foto,ruta_foto)
      self.esperar_y_hacer_click(self.btn_save_employee)
+ @allure.step("Validación toast de alta de empleado")    
  def validacion_toast_alta_usuario(self):
       return self.toast_and_wait(self.toast_suscces)
+ 
+ @allure.step("Llenar detalles personales")
  def personal_details(self, data):
     # Esperar a que el spinner desaparezca y asegurarse de que los campos sean interactuables
     self.esperar_spinner_desaparecer(self.spiner)
@@ -107,14 +118,20 @@ class PinPage(BaseOrange):
     self.llenar_datepicker(self.txt_date_birth, data['date_of_birth'])
     self.llenar_radio_button(self.male, self.female)
     self.esperar_y_hacer_click(self.btn_personal_details)
+    
+ @allure.step("Validación toast de detalles personales")
  def validacion_toast_personal_details(self):
       return self.toast_and_wait(self.toast_suscces)
  
+ 
+ @allure.step("Llenar campos personalizados")
  def custom_fields(self,data):
      self.llenar_dropdown(self.blod_type,data['blood_type'])
      self.esperar_y_hacer_click(self.btn_save_custom_fields)
+ @allure.step("Validación toast de campos personalizados")
  def validacion_toast_custom_fields(self):
          return self.toast_and_wait(self.toast_suscces)
+ @allure.step("Llenar detalles de contacto")
  def contact_details(self,data):
      self.esperar_y_hacer_click(self.contact_details_menu)
      self.esperar_spinner_desaparecer(self.spiner)
@@ -124,11 +141,14 @@ class PinPage(BaseOrange):
      self.escribir_clickable(self.txt_state,data['state'])
      self.escribir_clickable(self.txt_postal_code,data['zip_code'])
      self.llenar_dropdown(self.dropdown_country,data['country'])
+ 
+ @allure.step("Llenar detalles de contacto (telefonos)")
  def fill_contact_telephone(self,data):
      self.escribir_clickable(self.home_phone,data['home_phone'])
      self.escribir_clickable(self.mobile_phone,data['mobile'])
      self.escribir_clickable(self.work_phone,data['work_phone'])
  
+ @allure.step("Llenar detalles de contacto (emails)")
  def fill_contact_email(self):
      unique_email = self.faker.email()
      other_email = self.faker.email()
@@ -136,12 +156,16 @@ class PinPage(BaseOrange):
      self.escribir_clickable(self.other_email, other_email)
      self.esperar_y_hacer_click(self.btn_personal_details)
 
+ 
+ @allure.step("Validación toast de detalles de contacto")
  def contact_details_toast(self):
      return self.toast_and_wait(self.toast_suscces)
 
+ @allure.step("Validación toast de campos personalizados")
  def custom_fields_contact_details_toast(self):
      return self.toast_and_wait(self.toast_suscces)
  
+ @allure.step("Llenar contactos de emergencia")
  def emergency_contacts(self,data):
         self.esperar_y_hacer_click(self.emergency_contact_menu)
         self.esperar_y_hacer_click(self.add_emergency_contact)
@@ -151,9 +175,12 @@ class PinPage(BaseOrange):
         self.escribir_clickable(self.contact_mobile_phone,data['mobile'])
         self.escribir_clickable(self.contact_work_phone,data['work_phone'])
         self.esperar_y_hacer_click(self.btn_save_emergency_contact)
- 
+
+ @allure.step("Validación toast de contactos de emergencia")
  def validacion_toast_emergency_contact(self):
         return self.toast_and_wait(self.toast_suscces)
+ 
+ @allure.step("Llenar dependientes")
  def assigned_dependents(self,data):
       self.esperar_y_hacer_click(self.dependets_menu)
       self.esperar_y_hacer_click(self.add_dependent)
@@ -162,8 +189,12 @@ class PinPage(BaseOrange):
       self.escribir_clickable(self.specific_dependent,data['specific_relationship'])
       self.llenar_datepicker(self.dependent_date_birth,data['date_of_birth'])
       self.esperar_y_hacer_click(self.btn_save_dependent)
+ 
+ @allure.step("Validación toast de dependientes")
  def validacion_toast_dependents(self):
       return self.toast_and_wait(self.toast_suscces)
+ 
+ @allure.step("Llenar información de inmigración")
  def fill_inmigration(self,data):
       self.esperar_y_hacer_click(self.inmigration_menu)
       self.esperar_y_hacer_click(self.add_inmigration)
@@ -175,9 +206,12 @@ class PinPage(BaseOrange):
       self.llenar_dropdown(self.document_issued_by,data['document_issued_by'])
       self.llenar_datepicker(self.document_review_date,data['document_review_date'])
       self.escribir_clickable(self.document_comments,data['document_comments'])
-
-      
-
+      self.esperar_y_hacer_click(self.btn_save_inmigration)
+ 
+ @allure.step("Validación toast de información de inmigración")
+ def validacion_toast_inmigration(self):
+      return self.toast_and_wait(self.toast_suscces)
+ 
 
       
      
