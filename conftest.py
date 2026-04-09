@@ -9,6 +9,10 @@ from data.data import USUARIOS
 def driver():
     # --- CONFIGURACIÓN DE CHROME ---
     chrome_options = Options()
+    chrome_options.add_argument("--headless")
+    chrome_options.add_argument("--no-sandbox") 
+    chrome_options.add_argument("--disable-dev-shm-usage")
+    chrome_options.add_argument("--window-size=1920,1080")
     chrome_options.add_argument("--incognito")
     chrome_options.add_argument("--disable-features=SafeBrowsingPasswordCheck")
     
@@ -21,7 +25,7 @@ def driver():
     
     # Arrancamos el driver
     driver = webdriver.Chrome(options=chrome_options)
-    driver.maximize_window()
+    # driver.maximize_window()
     
     yield driver # Le presta el driver al test
     
